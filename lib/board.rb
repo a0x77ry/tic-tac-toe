@@ -1,25 +1,28 @@
-class Board
-  require "../lib/player.rb"
+# frozen_string_literal: true
 
-  @@marks = { x: "x", o: "o", n: "-" }
+# Board class for tic-tac-toe
+class Board
+  require_relative 'player'
+
+  @@marks = { x: 'x', o: 'o', n: '-' }
   @@win_lanes = [
-    [ [0, 0], [0, 1], [0, 2] ],
-    [ [1, 0], [1, 1], [1, 2] ],
-    [ [2, 0], [2, 1], [2, 2] ],
-    [ [0, 0], [1, 0], [2, 0] ],
-    [ [0, 1], [1, 1], [2, 1] ],
-    [ [0, 2], [1, 2], [2, 2] ],
-    [ [0, 0], [1, 1], [2, 2] ],
-    [ [0, 2], [1, 1], [2, 0] ]
+    [[0, 0], [0, 1], [0, 2]],
+    [[1, 0], [1, 1], [1, 2]],
+    [[2, 0], [2, 1], [2, 2]],
+    [[0, 0], [1, 0], [2, 0]],
+    [[0, 1], [1, 1], [2, 1]],
+    [[0, 2], [1, 2], [2, 2]],
+    [[0, 0], [1, 1], [2, 2]],
+    [[0, 2], [1, 1], [2, 0]]
   ]
 
   attr_reader :grid, :grid_str
 
   def initialize
     @grid = [
-      ["-", "-", "-"],
-      ["-", "-", "-"],
-      ["-", "-", "-"]
+      ['-', '-', '-'],
+      ['-', '-', '-'],
+      ['-', '-', '-']
     ]
     self.grid_str = @grid
   end
@@ -39,23 +42,23 @@ class Board
 
   def filled?
     grid.each do |row|
-      row.each { |item| return false if item == "-" }
+      row.each { |item| return false if item == '-' }
     end
   end
 
   def illegal?(row, column)
-    #return true unless grid[row][column] == "-" && row >= 0 && row <= 2 && column >= 0 && column <= 2
     if grid[row].nil? ||
-       grid[row][column] != "-" ||
+       grid[row][column] != '-' ||
        row < 0 ||
        row > 2 ||
        column < 0 ||
        column > 2
       return true
     end
+
     false
   end
-  
+
   private
 
   def grid_str=(grid)
