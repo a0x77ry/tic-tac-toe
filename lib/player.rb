@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Player
-  require '../lib/board.rb'
+  require_relative 'board'
 
   attr_accessor :mark, :name
 
