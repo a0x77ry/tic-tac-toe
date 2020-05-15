@@ -34,35 +34,41 @@ class Game
 
     # Row and column - 1 because the grid numbering for the user is different
     @board.update(@current_p, p_row - 1, p_column - 1)
-    check_winner
+    check_winner(@board)
     @current_p = @current_p == @p1 ? @p2 : @p1
   end
-
-  private
 
   def show_board(board)
     puts board.grid_str
   end
 
-  def get_end_mark(lane)
-    if [@board.grid[lane[0][0]][lane[0][1]],
-        @board.grid[lane[1][0]][lane[1][1]],
-        @board.grid[lane[2][0]][lane[2][1]]].uniq.length == 1
-      return @board.grid[lane[0][0]][lane[0][1]]
-    end
-
-    nil
-  end
-
-  def check_winner
+  def check_winner(board)
     Board.win_lanes.each do |lane|
-      end_mark = get_end_mark(lane)
-      if end_mark == Board.marks[:x] || end_mark == Board.marks[:o]
+      end_mark = get_end_mark(board, lane)
+      if [Board.marks[:x], Board.marks[:o]].include?(end_mark)
         self.winner = @current_p == @p1 ? @@results[:player1] : @@results[:player2]
-        break
+        return true
       end
     end
 
-    self.winner = @@results[:draw] if @board.filled? && winner.nil?
+    if @board.filled? && winner.nil?
+      self.winner = @@results[:draw]
+      return true
+    end
+
+    false
+  end
+
+  private
+
+  def get_end_mark(board, lane)
+    gr = board.grid
+    if [gr[lane[0][0]][lane[0][1]],
+        gr[lane[1][0]][lane[1][1]],
+        gr[lane[2][0]][lane[2][1]]].uniq.length == 1
+      return gr[lane[0][0]][lane[0][1]]
+    end
+
+    nil
   end
 end
